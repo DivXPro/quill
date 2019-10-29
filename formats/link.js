@@ -1,6 +1,5 @@
 import Inline from '../blots/inline';
 
-
 class Link extends Inline {
   static create(value) {
     let node = super.create(value);

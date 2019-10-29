@@ -26,6 +26,7 @@ import Video from './formats/video';
 import CodeBlock, { Code as InlineCode } from './formats/code';
 
 import Formula from './modules/formula';
+import Label from './modules/label';
 import Syntax from './modules/syntax';
 import Toolbar from './modules/toolbar';
 
@@ -34,6 +35,7 @@ import Picker from './ui/picker';
 import ColorPicker from './ui/color-picker';
 import IconPicker from './ui/icon-picker';
 import Tooltip from './ui/tooltip';
+import SelectTooltip from './ui/select-tooltip';
 
 import BubbleTheme from './themes/bubble';
 import SnowTheme from './themes/snow';
@@ -87,6 +89,7 @@ Quill.register({
   'formats/list/item': ListItem,
 
   'modules/formula': Formula,
+  'modules/label': Label,
   'modules/syntax': Syntax,
   'modules/toolbar': Toolbar,
 
@@ -97,7 +100,8 @@ Quill.register({
   'ui/picker': Picker,
   'ui/icon-picker': IconPicker,
   'ui/color-picker': ColorPicker,
-  'ui/tooltip': Tooltip
+  'ui/tooltip': Tooltip,
+  'ui/select-tooltip': SelectTooltip
 }, true);
 
 

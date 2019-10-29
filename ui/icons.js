@@ -34,6 +34,7 @@ module.exports = {
     '-1'      : require('../assets/icons/outdent.svg')
   },
   'link'      : require('../assets/icons/link.svg'),
+  'label'      : require('../assets/icons/label.svg'),
   'list': {
     'ordered' : require('../assets/icons/list-ordered.svg'),
     'bullet'  : require('../assets/icons/list-bullet.svg'),
