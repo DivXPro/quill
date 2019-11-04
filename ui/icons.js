@@ -21,6 +21,7 @@ import linkIcon from '../assets/icons/link.svg';
 import listBulletIcon from '../assets/icons/list-bullet.svg';
 import listCheckIcon from '../assets/icons/list-check.svg';
 import listOrderedIcon from '../assets/icons/list-ordered.svg';
+import labelIcon from '../assets/icons/label.svg';
 import subscriptIcon from '../assets/icons/subscript.svg';
 import superscriptIcon from '../assets/icons/superscript.svg';
 import strikeIcon from '../assets/icons/strike.svg';
@@ -63,6 +64,7 @@ module.exports = {
     check: listCheckIcon,
     ordered: listOrderedIcon,
   },
+  label: labelIcon,
   script: {
     sub: subscriptIcon,
     super: superscriptIcon,

@@ -30,6 +30,8 @@ import Video from './formats/video';
 
 import CodeBlock, { Code as InlineCode } from './formats/code';
 
+import Formula from './modules/formula';
+import Label from './modules/label';
 import Syntax from './modules/syntax';
 import Table from './modules/table';
 import Toolbar from './modules/toolbar';
@@ -39,6 +41,7 @@ import Picker from './ui/picker';
 import ColorPicker from './ui/color-picker';
 import IconPicker from './ui/icon-picker';
 import Tooltip from './ui/tooltip';
+import SelectTooltip from './ui/select-tooltip';
 
 import BubbleTheme from './themes/bubble';
 import SnowTheme from './themes/snow';
@@ -95,6 +98,7 @@ Quill.register(
     'modules/syntax': Syntax,
     'modules/table': Table,
     'modules/toolbar': Toolbar,
+    'modules/label': Label,
 
     'themes/bubble': BubbleTheme,
     'themes/snow': SnowTheme,

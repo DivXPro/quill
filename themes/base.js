@@ -5,6 +5,7 @@ import ColorPicker from '../ui/color-picker';
 import IconPicker from '../ui/icon-picker';
 import Picker from '../ui/picker';
 import Tooltip from '../ui/tooltip';
+import SelectTooltip from '../ui/select-tooltip.js'
 
 const ALIGNS = [false, 'center', 'right', 'justify'];
 
@@ -67,6 +68,10 @@ class BaseTheme extends Theme {
         !this.quill.hasFocus()
       ) {
         this.tooltip.hide();
+      }
+      if (this.selectTooltip != null && !this.selectTooltip.root.contains(e.target) &&
+          document.activeElement !== this.tooltip.textbox && !this.quill.hasFocus()) {
+        this.selectTooltip.hide();
       }
       if (this.pickers != null) {
         this.pickers.forEach(picker => {
@@ -181,6 +186,9 @@ BaseTheme.DEFAULTS = extend(true, {}, Theme.DEFAULTS, {
         video() {
           this.quill.theme.tooltip.edit('video');
         },
+        label: function () {
+          this.quill.theme.selectTooltip.edit('label');
+        },
       },
     },
   },
@@ -273,6 +281,19 @@ class BaseTooltip extends Tooltip {
         }
         break;
       }
+      case 'label': {
+        if (!value) break;
+        let range = this.quill.getSelection(true);
+        if (range != null) {
+          let index = range.index + range.length;
+          this.quill.insertEmbed(index, this.root.getAttribute('data-mode'), value, Emitter.sources.USER);
+          if (this.root.getAttribute('data-mode') === 'label') {
+            this.quill.insertText(index + 1, ' ', Emitter.sources.USER);
+          }
+          this.quill.setSelection(index + 2, Emitter.sources.USER);
+        }
+        break;
+      }
       default:
     }
     this.textbox.value = '';
@@ -310,4 +331,68 @@ function fillSelect(select, values, defaultValue = false) {
   });
 }
 
-export { BaseTooltip, BaseTheme as default };
+class BaseSelectTooltip extends SelectTooltip {
+  constructor(quill, boundsContainer) {
+    super(quill, boundsContainer);
+    this.textbox = this.root.querySelector('select');
+    this.listen();
+  }
+
+  listen() {
+    this.textbox.addEventListener('keydown', (event) => {
+      if (Keyboard.match(event, 'enter')) {
+        this.save();
+        event.preventDefault();
+      } else if (Keyboard.match(event, 'escape')) {
+        this.cancel();
+        event.preventDefault();
+      }
+    });
+    this.textbox.addEventListener('change', (event) => {
+      this.save();
+      event.preventDefault();
+    });
+  }
+
+  cancel() {
+    this.hide();
+  }
+
+  edit(mode = 'label') {
+    this.root.classList.remove('ql-hidden');
+    this.root.classList.add('ql-editing');
+    this.position(this.quill.getBounds(this.quill.selection.savedRange));
+    this.root.setAttribute('data-mode', mode);
+  }
+
+  restoreFocus() {
+    let scrollTop = this.quill.scrollingContainer.scrollTop;
+    this.quill.focus();
+    this.quill.scrollingContainer.scrollTop = scrollTop;
+  }
+
+  save() {
+    let selected = this.textbox.selectedIndex;
+    let value = this.textbox.options[selected].value;
+    switch(this.root.getAttribute('data-mode')) {
+      case 'label': {
+        if (!value) break;
+        let range = this.quill.getSelection(true);
+        if (range != null) {
+          let index = range.index + range.length;
+          this.quill.insertEmbed(index, this.root.getAttribute('data-mode'), value, Emitter.sources.USER);
+          if (this.root.getAttribute('data-mode') === 'label') {
+            this.quill.insertText(index + 1, ' ', Emitter.sources.USER);
+          }
+          this.quill.setSelection(index + 2, Emitter.sources.USER);
+        }
+        break;
+      }
+      default:
+    }
+    this.textbox.value = '';
+    this.hide();
+  }
+}
+
+export { BaseTooltip, BaseSelectTooltip, BaseTheme as default };
